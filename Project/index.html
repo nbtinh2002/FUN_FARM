@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer </title>
+    <meta name="author" content="Bao Tinh" />
+    <link type="text/css" rel="stylesheet" href="style.css" />
+    <script src="java.js">  </script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-database.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-analytics.js"></script>   
+</head>
+
+<body>
+    <div class="container">
+        <div class="menu">
+            <div class="logo"><img src="image/SchoolLogo.png" width="70px" height="70px"></div>
+            <div>
+                <button class="banner" onclick="function_HN()"><b>Hà Nội</b></button>
+                <button class="banner" onclick="function_GL()"><b>Gia Lai</b></button>
+                <button class="banner" onclick="function_BD()"><b>Bình Định</b></button>
+                <button class="banner" onclick="function_HCM()"><b>TP.HCM</b></button>
+            </div>
+            <div class="clock">
+                <div class="time"></div></br>
+                <div class="date"></div>
+                <script>setInterval(updateTime, 100);</script>
+            </div>
+        </div>
+        <div class="content">
+            <div class="header"><h1><b>FUN FARM MANAGEMENT</b></h1></div>
+            <div class="mainbody">
+                <div class="cell">
+                    <h1 style="text-align: center;">Nhiệt Độ:<br><span id="nhietdo">0</span> &#186C </h1>
+                    <div class="img" style="text-align: center;">
+                        <img src="image/temperature_icon.png" width="100px" height="100px" />
+                    </div>
+                </div>
+                <div class="cell">
+                    <h1 style="text-align: center;">Độ ẩm:<br><span id = "doam">0</span>&#37</h1>
+                    <div class="img" style="text-align: center;">
+                        <img src="image/humidity_icon.png" width="100px" height="100px" />
+                    </div>
+                </div>
+                <div class="cell">
+                    <h1 style="text-align: center;">Khí Gas:<br><span id = "gas">0</span>ppm</h1>
+                    <div class="img" style="text-align: center;">
+                        <img src="image/co2_icon.png" width="100px" height="100px" />
+                    </div>
+                </div>
+                <div class="cell1">
+                    <h1 style="text-align: center;">Chuông báo</h1>
+                    <div class="img" style="text-align: center;">
+                        <img id="call" src="image/bell_off.png" width="100px" height="100px" />
+                    </div>
+                    <button class="btncall" type="button" id="btn1"><b>Call</b></button>
+                    <script>called(); </script>
+                </div>
+                <div class="cell1">
+                    <h1 style="text-align: center;">Đèn chiếu sáng</h1>
+                    <div class="img" style="text-align: center;">
+                        <img id="light" src="image/light_off.png" width="100px" height="100px" />
+                    </div >
+                    <button class="b_on"  type="button" id="bton"><b> On </b></button>
+                    <button class="b_off" type="button" id="btoff"><b> Off </b></button>
+                    <script>lightcontrol(); </script>
+                </div>
+                <div class="cell1">
+                    <h1 style="text-align: center;">Máy bơm</h1>
+                    <div class="img" style="text-align: center;">
+                        <img id="maybom" src="image/pump0.png" width="150px" height="100px" />
+                    </div>
+                    <div>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="myRange">
+                        <p><span id="sliderValue">50</span></p>
+                        <script> getvalueslider();</script>
+                    </div>
+                </div>
+
+            </div>
+            <div class="footer">
+                <p>Nguyễn Bảo Tính - Đào Thế Hữu - Phạm Thế An</p><br>
+                    <p>Copyright by &#10084SV_2016VMVT1_SPKT&#10084</p>
+            </div>
+        </div>  
+    </div>
+    <script>
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+    <script>
+        //functions
+        var ndHN = document.getElementById('nhietdo');
+        var nd_HN = firebase.database().ref('HN').child('Nhietdo');  
+        var daHN = document.getElementById('doam');
+        var da_HN = firebase.database().ref('HN').child('Doam');
+        var coHN = document.getElementById('gas');
+        var co_HN = firebase.database().ref('HN').child('Khigas');
+      
+        var ndGL = document.getElementById('nhietdo');
+        var nd_GL = firebase.database().ref('GL').child('Nhietdo');  
+        var daGL = document.getElementById('doam');
+        var da_GL = firebase.database().ref('GL').child('Doam');
+        var coGL = document.getElementById('gas');
+        var co_GL = firebase.database().ref('GL').child('Khigas');
+
+        var ndBD = document.getElementById('nhietdo');
+        var nd_BD = firebase.database().ref('BD').child('Nhietdo');  
+        var daBD = document.getElementById('doam');
+        var da_BD = firebase.database().ref('BD').child('Doam');
+        var coBD = document.getElementById('gas');
+        var co_BD = firebase.database().ref('BD').child('Khigas');
+      
+        var ndHCM = document.getElementById('nhietdo');
+        var nd_HCM = firebase.database().ref('HCM').child('Nhietdo');  
+        var daHCM = document.getElementById('doam');
+        var da_HCM = firebase.database().ref('HCM').child('Doam');
+        var coHCM = document.getElementById('gas');
+        var co_HCM = firebase.database().ref('HCM').child('Khigas');
+    </script>
+</body>
+</html>
